@@ -1,0 +1,24 @@
+{
+    "name": "phpbe/installer",
+    "type": "composer-plugin",
+    "license": "MIT",
+    "description": "BE框架安装器",
+    "authors": [
+        {
+            "name": "liu12",
+            "email": "i@liu12.com",
+            "homepage": "http://www.liu12.com/"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Phpbe\\Installer\\": "src/"
+        }
+    },
+    "extra": {
+        "class": "Phpbe\\Installer\\Plugin"
+    },
+    "require": {
+        "composer-plugin-api": "^1.0"
+    }
+}
