@@ -5,7 +5,7 @@ namespace Phpbe\Installer;
 use Composer\Package\PackageInterface;
 use Composer\Installer\LibraryInstaller;
 
-class Installer implements LibraryInstaller
+class Installer extends LibraryInstaller
 {
 
     public function getPackageBasePath(PackageInterface $package)
