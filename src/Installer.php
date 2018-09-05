@@ -14,50 +14,50 @@ class Installer extends LibraryInstaller
 
         $packageTypeConfigs = array(
             'phpbe-app' => array(
-                'installDir' => 'app',
+                'installRootDir' => 'app',
                 'stripPrefix' => 'app-',
-                'formatAppName' => true
+                'formatName' => true
             ),
             'phpbe-ui' => array(
-                'installDir' => 'ui',
+                'installRootDir' => 'ui',
                 'stripPrefix' => 'ui-',
-                'formatAppName' => true
+                'formatName' => true
             ),
             'phpbe-theme' => array(
-                'installDir' => 'theme',
+                'installRootDir' => 'theme',
                 'stripPrefix' => 'theme-',
-                'formatAppName' => false
+                'formatName' => false
             )
         );
 
         $packageTypeConfig = $packageTypeConfigs[$packageType];
 
-        $appName = null;
+        $installDirName = null;
         $extra = $package->getExtra();
 
-        // 可以 extra 中指定 APP 名称
-        if (!empty($extra['app-name'])) {
-            $appName = $extra['app-name'];
+        // 可以 extra 中指定安装的目录名
+        if (!empty($extra['install-dir-name'])) {
+            $installDirName = $extra['install-dir-name'];
         } else {
             $prettyName = strtolower($package->getPrettyName());
             if (strpos($prettyName, '/') !== false) {
-                list($vendor, $appName) = explode('/', $prettyName);
+                list($vendor, $installDirName) = explode('/', $prettyName);
             } else {
                 $vendor = '';
-                $appName = $prettyName;
+                $installDirName = $prettyName;
             }
 
-            if (strpos($appName, $packageTypeConfig['stripPrefix']) === 0) {
-                $appName = substr($appName, strlen($packageTypeConfig['stripPrefix']));
+            if (strpos($installDirName, $packageTypeConfig['stripPrefix']) === 0) {
+                $installDirName = substr($installDirName, strlen($packageTypeConfig['stripPrefix']));
             }
 
-            if ($packageTypeConfig['formatAppName']) {
-                $appName = strtolower(str_replace(array('-', '_'), ' ', $appName));
-                $appName = str_replace(' ', '', ucwords($appName));
+            if ($packageTypeConfig['formatName']) {
+                $installDirName = strtolower(str_replace(array('-', '_'), ' ', $installDirName));
+                $installDirName = str_replace(' ', '', ucwords($installDirName));
             }
         }
 
-        return $packageTypeConfig['installDir'] . '/' . $appName;
+        return $packageTypeConfig['installRootDir'] . '/' . $installDirName;
     }
 
 
