@@ -8,33 +8,51 @@ use Composer\Installer\LibraryInstaller;
 class Installer extends LibraryInstaller
 {
 
-    public function getPackageBasePath(PackageInterface $package)
+    public function getInstallPath(PackageInterface $package)
     {
-        $prettyName = $package->getPrettyName();
-        $pos = strpos($prettyName, '-');
-        $prefix = '';
-        if ($pos !== false) {
-            $prefix = substr($prettyName, 0, $pos);
+        $packageType = strtolower($package->getType());
+
+        $vendor = null;
+        $appName = null;
+
+        $prettyName = strtolower($package->getPrettyName());
+        if (strpos($prettyName, '/') !== false) {
+            list($vendor, $appName) = explode('/', $prettyName);
+        } else {
+            $vendor = '';
+            $appName = $prettyName;
         }
 
-        $pluginDirs = array(
-            'phpbe/app-' => 'app',   // APP
-            'phpbe/ui-' => 'ui',    // 前端UI
-            'phpbe/theme-' => 'theme'  // 主题
+        $packageTypeConfigs = array(
+            'phpbe-app' => array(
+                'installDir' => 'app',
+                'stripPrefix' => 'app-',
+                'formatAppName' => true
+            ),
+            'phpbe-ui' => array(
+                'installDir' => 'ui',
+                'stripPrefix' => 'ui-',
+                'formatAppName' => true
+            ),
+            'phpbe-theme' => array(
+                'installDir' => 'theme',
+                'stripPrefix' => 'theme-',
+                'formatAppName' => false
+            )
         );
 
-        if (!isset($pluginDirs[$prefix])) {
-            throw new \InvalidArgumentException('安装失败，包名应该以 "' . implode('"，"', array_keys($pluginDirs)) . '" 等开头');
+        $packageTypeConfig = $packageTypeConfigs[$packageType];
+
+        if (strpos($appName, $packageTypeConfig['stripPrefix']) !== 0) {
+            $appName = substr($appName, strlen($packageTypeConfig['stripPrefix']));
         }
 
-        $appName = substr($prettyName, $pos);
-        $appName = str_replace([
-            '-a', '-b', '-c', '-d', '-e', '-f', '-g', '-h', '-i', '-j', '-k', '-l', '-m', '-n', '-o', '-p', '-q', '-r', '-s', '-t', '-u', '-v', '-w', '-x', '-y', '-z'
-        ], [
-            'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
-        ], $appName);
+        if ($packageTypeConfig['formatAppName']) {
+            $appName = strtolower(str_replace(array('-', '_'), ' ', $appName));
+            $appName = str_replace(' ', '', ucwords($appName));
+        }
 
-        return $pluginDirs[$prefix] . '/' . $appName;
+        return $packageTypeConfig['installDir'] . '/' . $appName;
     }
 
 
