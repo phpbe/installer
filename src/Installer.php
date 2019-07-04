@@ -1,6 +1,6 @@
 <?php
 
-namespace Phpbe\Installer;
+namespace Be\Installer;
 
 use Composer\Package\PackageInterface;
 use Composer\Installer\LibraryInstaller;
@@ -13,17 +13,17 @@ class Installer extends LibraryInstaller
         $packageType = strtolower($package->getType());
 
         $packageTypeConfigs = array(
-            'phpbe-app' => array(
+            'be-app' => array(
                 'installRootDir' => 'app',
                 'stripPrefix' => 'app-',
                 'formatName' => true
             ),
-            'phpbe-ui' => array(
+            'be-ui' => array(
                 'installRootDir' => 'ui',
                 'stripPrefix' => 'ui-',
                 'formatName' => true
             ),
-            'phpbe-theme' => array(
+            'be-theme' => array(
                 'installRootDir' => 'theme',
                 'stripPrefix' => 'theme-',
                 'formatName' => false
@@ -64,9 +64,9 @@ class Installer extends LibraryInstaller
     public function supports($packageType)
     {
         return in_array($packageType, array(
-            'phpbe-app',
-            'phpbe-ui',
-            'phpbe-theme'
+            'be-app',
+            'be-ui',
+            'be-theme'
         ));
     }
 

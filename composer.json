@@ -1,5 +1,5 @@
 {
-    "name": "phpbe/installer",
+    "name": "be/installer",
     "type": "composer-plugin",
     "license": "MIT",
     "description": "BE框架安装器",
@@ -12,11 +12,11 @@
     ],
     "autoload": {
         "psr-4": {
-            "Phpbe\\Installer\\": "src/"
+            "Be\\Installer\\": "src/"
         }
     },
     "extra": {
-        "class": "Phpbe\\Installer\\Plugin"
+        "class": "Be\\Installer\\Plugin"
     },
     "require": {
         "composer-plugin-api": "^1.0"

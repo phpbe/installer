@@ -1,5 +1,5 @@
 <?php
-namespace Phpbe\Installer;
+namespace Be\Installer;
 
 use Composer\Composer;
 use Composer\IO\IOInterface;
